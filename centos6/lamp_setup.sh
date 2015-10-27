@@ -8,13 +8,13 @@ pecl install imagick
 
 ### Add webadmin group ###
 groupadd webadmin
-gpasswd -a srv_admin webadmin
+gpasswd -a ${ADMIN_USER} webadmin
 gpasswd -a apache webadmin
 
 ### Create Web directries ###
 echo "umask 002" > /etc/profile.d/umask.sh
 mkdir -p /var/www/sites
-chown srv_admin /var/www/sites /var/www/html
+chown ${ADMIN_USER} /var/www/sites /var/www/html
 chgrp webadmin /var/www/sites /var/www/html
 chmod 775 /var/www/sites /var/www/html
 chmod g+s /var/www/sites /var/www/html

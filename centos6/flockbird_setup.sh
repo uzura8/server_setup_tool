@@ -1,35 +1,35 @@
 #flockbird_setup.sh
 
 ### setup rsa for git ###
-mkdir /home/srv_admin/.ssh
-echo "${SSH_ID_RSA_PUB}" > /home/srv_admin/.ssh/id_rsa.pub
-echo "${SSH_ID_RSA}" > /home/srv_admin/.ssh/id_rsa
+mkdir /home/${ADMIN_USER}/.ssh
+echo "${SSH_ID_RSA_PUB}" > /home/${ADMIN_USER}/.ssh/id_rsa.pub
+echo "${SSH_ID_RSA}" > /home/${ADMIN_USER}/.ssh/id_rsa
 
-chown -R srv_admin. /home/srv_admin/.ssh
-chmod 700 /home/srv_admin/.ssh
-chmod 600 /home/srv_admin/.ssh/id_rsa
-echo_and_exec "ls -al /home/srv_admin/.ssh"
+chown -R ${ADMIN_USER}. /home/${ADMIN_USER}/.ssh
+chmod 700 /home/${ADMIN_USER}/.ssh
+chmod 600 /home/${ADMIN_USER}/.ssh/id_rsa
+echo_and_exec "ls -al /home/${ADMIN_USER}/.ssh"
 next
 
-cp /home/srv_admin/.ssh/id_rsa /root/.ssh/
-cp /home/srv_admin/.ssh/id_rsa.pub /root/.ssh/
+cp /home/${ADMIN_USER}/.ssh/id_rsa /root/.ssh/
+cp /home/${ADMIN_USER}/.ssh/id_rsa.pub /root/.ssh/
 chown root. /root/.ssh/*
 
 ### DB buckup ###
-mkdir -p /home/srv_admin/backup/mysql
-cd /home/srv_admin/backup/mysql
+mkdir -p /home/${ADMIN_USER}/backup/mysql
+cd /home/${ADMIN_USER}/backup/mysql
 git clone git@github.com:uzura8/db_daily_backup.git
 cd db_daily_backup/
 chmod u+x backup.sh
 cp setting.conf.sample setting.conf
-chown -R srv_admin. /home/srv_admin/backup
+chown -R ${ADMIN_USER}. /home/${ADMIN_USER}/backup
 sed -e "s/sampl_db_name/${APP_DB_NAME}/" setting.conf > /tmp/setting.conf.$$
 mv /tmp/setting.conf.$$ setting.conf
 echo_and_exec "grep DB_LIST setting.conf"
 next
 
 #### add cron
-echo "0 5 * * * root /home/srv_admin/backup/mysql/db_daily_backup/backup.sh" > /etc/cron.d/flockbird
+echo "0 5 * * * root /home/${ADMIN_USER}/backup/mysql/db_daily_backup/backup.sh" > /etc/cron.d/flockbird
 echo_and_exec "cat /etc/cron.d/flockbird"
 next
 
@@ -50,7 +50,7 @@ rm -f /tmp/config.php.3.$$
 rm -f /tmp/config.php.4.$$
 
 sh bin/setup/setup.sh
-chown -R srv_admin:webadmin /var/www/sites/${SERVISE_DOMAIN}
+chown -R ${ADMIN_USER}:webadmin /var/www/sites/${SERVISE_DOMAIN}
 echo_and_exec "ls -al /var/www/sites/${SERVISE_DOMAIN}"
 next
 

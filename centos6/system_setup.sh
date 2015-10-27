@@ -103,12 +103,12 @@ nrsysmond-config --set license_key=${NEWRELIC_LICENCE_KEY}
 /etc/init.d/newrelic-sysmond start
 
 ### git setting
-cat > /home/srv_admin/.gitconfig <<EOF
+cat > /home/${ADMIN_USER}/.gitconfig <<EOF
 [color]
   diff = auto
   status = auto
   branch = auto
   interactive = auto
 EOF
-echo "${GIT_USER_CONF}" >> /home/srv_admin/.gitconfig
-chown srv_admin. /home/srv_admin/.gitconfig
+echo "${GIT_USER_CONF}" >> /home/${ADMIN_USER}/.gitconfig
+chown ${ADMIN_USER}. /home/${ADMIN_USER}/.gitconfig

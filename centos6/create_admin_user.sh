@@ -44,14 +44,14 @@ next
 
 
 ### bash setting ###
-cat >> /home/srv_admin/.bash_profile <<EOF
+cat >> /home/${ADMIN_USER}/.bash_profile <<EOF
 export EDITOR=vim
 export PS1="[\u@\h \W]\\$ "
 EOF
 source ~/.bash_profile
 
 ### screen setting ###
-cat > /home/srv_admin/.screenrc <<EOF
+cat > /home/${ADMIN_USER}/.screenrc <<EOF
 escape ^Jj
 hardstatus alwayslastline "[%02c] %-w%{=b bw}%n %t%{-}%+w"
 startup_message off
@@ -60,10 +60,10 @@ autodetach on
 defscrollback 10000
 termcapinfo xterm* ti@:te@
 EOF
-chown srv_admin. /home/srv_admin/.screenrc
+chown ${ADMIN_USER}. /home/${ADMIN_USER}/.screenrc
 
 ### vim setting ###
-cat > /home/srv_admin/.vimrc <<EOF
+cat > /home/${ADMIN_USER}/.vimrc <<EOF
 syntax on
 "set number
 set enc=utf-8
@@ -79,4 +79,4 @@ set tabstop=2
 set hlsearch
 set backspace=indent,eol,start
 EOF
-chown srv_admin. /home/srv_admin/.vimrc
+chown ${ADMIN_USER}. /home/${ADMIN_USER}/.vimrc
