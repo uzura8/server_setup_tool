@@ -1,0 +1,36 @@
+#setup.conf
+
+OS_NAME="centos6"
+
+ADMIN_USER="srv_admin"
+SERVISE_DOMAIN="example.com"
+ADMIN_EMAIL="mail@example.com"
+
+ALLOW_IPS=`cat << EOS
+xxx.xxx.xxx.xxx
+EOS
+`
+NEWRELIC_LICENCE_KEY="input_newrelic_license_key"
+
+GIT_USER_CONF=`cat << EOS
+[user]
+  email = mail@example.com
+  name = Git Username
+EOS
+`
+
+APP_DB_NAME="dbname"
+MYSQL_USER_NAME="dbuser"
+MYSQL_USER_PASS="dbpassword"
+
+APP_GIT_URL="git@github.com:uzura8/flockbird.git"
+APP_FBD_ENCRYPTION_KEY="put_some_key_for_encryption_in_here"
+
+SSH_ID_RSA_PUB="input id_rsa.pub strings here"
+
+SSH_ID_RSA=`cat << EOS
+-----BEGIN RSA PRIVATE KEY-----
+input rsa private key here
+-----END RSA PRIVATE KEY-----
+EOS
+`
