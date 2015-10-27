@@ -101,3 +101,14 @@ rpm -Uvh http://download.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.
 yum install -y newrelic-sysmond
 nrsysmond-config --set license_key=${NEWRELIC_LICENCE_KEY}
 /etc/init.d/newrelic-sysmond start
+
+### git setting
+cat > /home/srv_admin/.gitconfig <<EOF
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+  interactive = auto
+EOF
+echo "${GIT_USER_CONF}" >> /home/srv_admin/.gitconfig
+chown srv_admin. /home/srv_admin/.gitconfig

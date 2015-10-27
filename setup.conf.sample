@@ -1,8 +1,11 @@
 #setup.conf
 
+## This is required to exrute create admin user script
 OS_NAME="centos6"
-
 ADMIN_USER="srv_admin"
+
+
+## Below setting is required to exrute system setup script
 SERVISE_DOMAIN="example.com"
 ADMIN_EMAIL="mail@example.com"
 

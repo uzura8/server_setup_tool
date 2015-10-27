@@ -27,9 +27,12 @@ How to use
 ### 3. execute system setup script ####
 * Connect by ssh and login admin user.
 * It's better to start screen connection before executing system setup script.
+* Before execute, You move tool directory on root to your own directory.
 * Execute below command.
     + You have to execute by sudo.
 
 ~~~
+$ sudo mv /root/server_setup_tool ~/
+$ cd server_setup_tool
 $ sudo sh execute_setup.sh
 ~~~

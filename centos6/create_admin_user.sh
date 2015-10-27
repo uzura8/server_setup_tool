@@ -80,14 +80,3 @@ set hlsearch
 set backspace=indent,eol,start
 EOF
 chown srv_admin. /home/srv_admin/.vimrc
-
-### git setting
-cat > /home/srv_admin/.gitconfig <<EOF
-[color]
-  diff = auto
-  status = auto
-  branch = auto
-  interactive = auto
-EOF
-echo "${GIT_USER_CONF}" >> /home/srv_admin/.gitconfig
-chown srv_admin. /home/srv_admin/.gitconfig
