@@ -37,3 +37,17 @@ input rsa private key here
 -----END RSA PRIVATE KEY-----
 EOS
 `
+
+SSL_CRT=`cat << EOS
+-----BEGIN CERTIFICATE-----
+input car here
+-----END CERTIFICATE-----
+EOS
+`
+
+SSL_CA_CRT=`cat << EOS
+-----BEGIN CERTIFICATE-----
+input ca.car here
+-----END CERTIFICATE-----
+EOS
+`
