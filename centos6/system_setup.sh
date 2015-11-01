@@ -96,6 +96,25 @@ next
 #### ntp setting ###
 ## TODO: add ntp setup
 
+#### postfix setting ###
+##### stop sendmail
+#/etc/rc.d/init.d/sendmail stop
+#yum -y remove sendmail
+#
+##### install postfix
+#yum -y install postfix
+#chkconfig postfix on
+#echo_and_exec "chkconfig --list postfix"
+#next
+#/etc/init.d/postfix start
+#
+##### set admin email
+#sed -i '/^root:/d' /etc/aliases
+#echo "root: ${ADMIN_EMAIL}" >> /etc/aliases
+#echo_and_exec "cat /etc/aliases | grep root"
+#next
+#newaliases
+
 ### install newrelic ###
 rpm -Uvh http://download.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm
 yum install -y newrelic-sysmond
