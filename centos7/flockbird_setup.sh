@@ -1,38 +1,38 @@
-##flockbird_setup.sh
-#
-#### setup rsa for git ###
-#mkdir /home/${ADMIN_USER}/.ssh
-#echo "${SSH_ID_RSA_PUB}" > /home/${ADMIN_USER}/.ssh/id_rsa.pub
-#echo "${SSH_ID_RSA}" > /home/${ADMIN_USER}/.ssh/id_rsa
-#
-#chown -R ${ADMIN_USER}. /home/${ADMIN_USER}/.ssh
-#chmod 700 /home/${ADMIN_USER}/.ssh
-#chmod 600 /home/${ADMIN_USER}/.ssh/id_rsa
-#echo_and_exec "ls -al /home/${ADMIN_USER}/.ssh"
-#next
-#
+#flockbird_setup.sh
+
+### setup rsa for git ###
+mkdir /home/${ADMIN_USER}/.ssh
+echo "${SSH_ID_RSA_PUB}" > /home/${ADMIN_USER}/.ssh/id_rsa.pub
+echo "${SSH_ID_RSA}" > /home/${ADMIN_USER}/.ssh/id_rsa
+
+chown -R ${ADMIN_USER}. /home/${ADMIN_USER}/.ssh
+chmod 700 /home/${ADMIN_USER}/.ssh
+chmod 600 /home/${ADMIN_USER}/.ssh/id_rsa
+echo_and_exec "ls -al /home/${ADMIN_USER}/.ssh"
+next
+
 mkdir /root/.ssh/
 cp /home/${ADMIN_USER}/.ssh/id_rsa /root/.ssh/
 cp /home/${ADMIN_USER}/.ssh/id_rsa.pub /root/.ssh/
 chown root. /root/.ssh/*
 
-#### DB buckup ###
-#mkdir -p /home/${ADMIN_USER}/backup/mysql
-#cd /home/${ADMIN_USER}/backup/mysql
-#git clone git@github.com:uzura8/db_daily_backup.git
-#cd db_daily_backup/
-#chmod u+x backup.sh
-#cp setting.conf.sample setting.conf
-#chown -R ${ADMIN_USER}. /home/${ADMIN_USER}/backup
-#sed -e "s/sampl_db_name/${APP_DB_NAME}/" setting.conf > /tmp/setting.conf.$$
-#mv /tmp/setting.conf.$$ setting.conf
-#echo_and_exec "grep DB_LIST setting.conf"
-#next
-#
-##### add cron
-#echo "0 5 * * * root /home/${ADMIN_USER}/backup/mysql/db_daily_backup/backup.sh" > /etc/cron.d/flockbird
-#echo_and_exec "cat /etc/cron.d/flockbird"
-#next
+### DB buckup ###
+mkdir -p /home/${ADMIN_USER}/backup/mysql
+cd /home/${ADMIN_USER}/backup/mysql
+git clone git@github.com:uzura8/db_daily_backup.git
+cd db_daily_backup/
+chmod u+x backup.sh
+cp setting.conf.sample setting.conf
+chown -R ${ADMIN_USER}. /home/${ADMIN_USER}/backup
+sed -e "s/sampl_db_name/${APP_DB_NAME}/" setting.conf > /tmp/setting.conf.$$
+mv /tmp/setting.conf.$$ setting.conf
+echo_and_exec "grep DB_LIST setting.conf"
+next
+
+#### add cron
+echo "0 5 * * * root /home/${ADMIN_USER}/backup/mysql/db_daily_backup/backup.sh" > /etc/cron.d/flockbird
+echo_and_exec "cat /etc/cron.d/flockbird"
+next
 
 ### setup flockbird ###
 cd /var/www/sites/

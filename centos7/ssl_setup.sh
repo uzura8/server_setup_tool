@@ -13,7 +13,7 @@ chmod 600 ./private/${SSL_KEY_FILENAME}
 
 ### set crt ###
 echo "${SSL_CRT}" > /etc/pki/tls/certs/${SERVISE_DOMAIN}.crt_${DATEYEAR}
-echo "${SSL_CA_CRT}" > etc/pki/tls/certs/ca.crt_${DATEYEAR}
+echo "${SSL_CA_CRT}" > /etc/pki/tls/certs/ca.crt_${DATEYEAR}
 chmod 600 /etc/pki/tls/certs/${SERVISE_DOMAIN}.crt_${DATEYEAR}
 
 ### mod_ssl setting ###
@@ -52,4 +52,4 @@ echo_and_exec "cat /etc/httpd/conf.d/ssl.conf"
 echo_and_exec "cat /etc/httpd/conf.d/virtualhost.conf"
 echo_and_exec "/etc/init.d/httpd configtest"
 next
-/etc/init.d/httpd restart
+systemctl restart httpd
