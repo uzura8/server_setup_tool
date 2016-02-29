@@ -45,12 +45,8 @@ cp /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf.ori
 
 
 sed -e "s/^#ServerName www.example.com:80/ServerName ${SERVISE_DOMAIN}:80/" /etc/httpd/conf/httpd.conf > /tmp/httpd.conf.$$
-sed -e "s/^ServerSignature On/ServerSignature Off/g" /tmp/httpd.conf.$$ > /tmp/httpd.conf.2.$$
-sed -e "s/^\(AddDefaultCharset UTF-8\)/#\1/g" /tmp/httpd.conf.2.$$ > /tmp/httpd.conf.3.$$
-sed -e "s/^\(LoadModule .\+\)$/#\1/" /tmp/httpd.conf.3.$$ > /tmp/httpd.conf.4.$$
-sed -e "s/^\(LogFormat .\+\)$/#\1/" /tmp/httpd.conf.4.$$ > /tmp/httpd.conf.5.$$
-sed -e "s/^\(CustomLog .\+\)$/#\1/" /tmp/httpd.conf.5.$$ > /tmp/httpd.conf.6.$$
-cat >> /tmp/httpd.conf.6.$$ <<EOF
+sed -e "s/^\(AddDefaultCharset UTF-8\)/#\1/g" /tmp/httpd.conf.$$ > /tmp/httpd.conf.2.$$
+cat >> /tmp/httpd.conf.2.$$ <<EOF
 
 ServerSignature Off
 
@@ -79,11 +75,10 @@ CustomLog logs/access_log combined env=!no_log
 
 EOF
 
-mv /tmp/httpd.conf.6.$$ /etc/httpd/conf/httpd.conf
+mv /tmp/httpd.conf.2.$$ /etc/httpd/conf/httpd.conf
 
 #### vertual host setting
 cat > /etc/httpd/conf.d/virtualhost.conf <<EOF
-NameVirtualHost *:80
 
 <VirtualHost *:80>
   VirtualDocumentRoot /var/www/sites/%0/public

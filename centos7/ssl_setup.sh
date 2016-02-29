@@ -23,16 +23,13 @@ yum -y install mod_ssl
 mv /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.ori
 
 cat > /etc/httpd/conf.d/ssl.conf <<EOF
-LoadModule ssl_module modules/mod_ssl.so
 Listen 443
 SSLPassPhraseDialog  builtin
 SSLSessionCache         shmcb:/var/cache/mod_ssl/scache(512000)
 SSLSessionCacheTimeout  300
-SSLMutex default
 SSLRandomSeed startup file:/dev/urandom  256
 SSLRandomSeed connect builtin
 SSLCryptoDevice builtin
-NameVirtualHost *:443
 EOF
 
 cat >> /etc/httpd/conf.d/virtualhost.conf <<EOF
