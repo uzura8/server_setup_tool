@@ -31,12 +31,16 @@ cp /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf.ori
 
 sed -e "s/^#ServerName www.example.com:80/ServerName ${SERVISE_DOMAIN}:80/" /etc/httpd/conf/httpd.conf > /tmp/httpd.conf.$$
 sed -e "s/^\(AddDefaultCharset UTF-8\)/#\1/g" /tmp/httpd.conf.$$ > /tmp/httpd.conf.2.$$
-cat >> /tmp/httpd.conf.2.$$ <<EOF
+sed -e "s/^\(\s\+\)\(CustomLog .\+\)$/\1#\2/" /tmp/httpd.conf.2.$$ > /tmp/httpd.conf.3.$$
+cat >> /tmp/httpd.conf.3.$$ <<EOF
+
 ServerSignature Off
+
 LogFormat "%V %h %l %u %t \"%r\" %>s %b %D \"%{Referer}i\" \"%{User-Agent}i\"" combined
 LogFormat "%V %h %l %u %t \"%!414r\" %>s %b %D" common
 LogFormat "%{Referer}i -> %U" referer
 LogFormat "%{User-agent}i" agent
+
 # No log from worm access
 SetEnvIf Request_URI "default\.ida" no_log
 SetEnvIf Request_URI "cmd\.exe" no_log
@@ -47,15 +51,17 @@ SetEnvIf Request_URI "NULL\.IDA" no_log
 SetEnvIf Remote_Addr 127.0.0.1 no_log
 # Log other access
 CustomLog logs/access_log combined env=!no_log
+
 <DirectoryMatch ~ "/\.(svn|git)/">
-    Deny from All
+  Require all denied
 </DirectoryMatch>
 <Files ~ "^\.git">
-    Deny from All
+  Require all denied
 </Files>
+
 EOF
 
-mv /tmp/httpd.conf.2.$$ /etc/httpd/conf/httpd.conf
+mv /tmp/httpd.conf.3.$$ /etc/httpd/conf/httpd.conf
 
 #### vertual host setting
 cat > /etc/httpd/conf.d/virtualhost.conf <<EOF
@@ -73,8 +79,6 @@ next
 rm -f /tmp/httpd.conf.$$
 rm -f /tmp/httpd.conf.2.$$
 rm -f /tmp/httpd.conf.3.$$
-rm -f /tmp/httpd.conf.4.$$
-rm -f /tmp/httpd.conf.5.$$
 
 ### PHP setting ###
 cat > /etc/php.d/my.ini <<EOF

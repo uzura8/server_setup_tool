@@ -112,6 +112,7 @@ cat > /etc/httpd/conf.d/virtualhost.conf <<EOF
 NameVirtualHost *:80
 
 <VirtualHost *:80>
+  ServerName localhost
   VirtualDocumentRoot /var/www/sites/%0/public
 </VirtualHost>
 

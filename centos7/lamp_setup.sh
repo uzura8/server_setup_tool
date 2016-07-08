@@ -46,7 +46,8 @@ cp /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf.ori
 
 sed -e "s/^#ServerName www.example.com:80/ServerName ${SERVISE_DOMAIN}:80/" /etc/httpd/conf/httpd.conf > /tmp/httpd.conf.$$
 sed -e "s/^\(AddDefaultCharset UTF-8\)/#\1/g" /tmp/httpd.conf.$$ > /tmp/httpd.conf.2.$$
-cat >> /tmp/httpd.conf.2.$$ <<EOF
+sed -e "s/^\(\s\+\)\(CustomLog .\+\)$/\1#\2/" /tmp/httpd.conf.2.$$ > /tmp/httpd.conf.3.$$
+cat >> /tmp/httpd.conf.3.$$ <<EOF
 
 ServerSignature Off
 
@@ -67,20 +68,21 @@ SetEnvIf Remote_Addr 127.0.0.1 no_log
 CustomLog logs/access_log combined env=!no_log
 
 <DirectoryMatch ~ "/\.(svn|git)/">
-    Deny from All
+  Require all denied
 </DirectoryMatch>
 <Files ~ "^\.git">
-    Deny from All
+  Require all denied
 </Files>
 
 EOF
 
-mv /tmp/httpd.conf.2.$$ /etc/httpd/conf/httpd.conf
+mv /tmp/httpd.conf.3.$$ /etc/httpd/conf/httpd.conf
 
 #### vertual host setting
 cat > /etc/httpd/conf.d/virtualhost.conf <<EOF
 
 <VirtualHost *:80>
+  ServerName localhost
   VirtualDocumentRoot /var/www/sites/%0/public
 </VirtualHost>
 
