@@ -3,7 +3,9 @@
 ## This is required to exrute create admin user script
 OS_NAME="centos6"
 ADMIN_USER="srv_admin"
-
+## Setting for Amazon Linux on EC2
+#OS_NAME="amazon_linux"
+#ADMIN_USER="ec2-user"
 
 ## Below setting is required to exrute system setup script
 SERVISE_DOMAIN="example.com"
