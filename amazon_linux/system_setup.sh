@@ -78,6 +78,9 @@ echo_and_exec "cat /etc/aliases | grep root"
 next
 newaliases
 
+### install sar ###
+yum -y install sysstat
+
 ### install newrelic ###
 rpm -Uvh http://download.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm
 yum install -y newrelic-sysmond
