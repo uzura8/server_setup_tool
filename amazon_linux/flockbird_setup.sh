@@ -18,7 +18,7 @@
 #### DB buckup ###
 #mkdir -p /home/${ADMIN_USER}/backup/mysql
 #cd /home/${ADMIN_USER}/backup/mysql
-#git clone git@github.com:uzura8/db_daily_backup.git
+#git clone https://github.com/uzura8/db_daily_backup.git
 #cd db_daily_backup/
 #chmod u+x backup.sh
 #cp setting.conf.sample setting.conf
