@@ -20,17 +20,17 @@ chmod 600 /etc/pki/tls/certs/${SERVISE_DOMAIN}.crt_${DATEYEAR}
 yum -y install mod_ssl
 
 ### edit ssl.conf ###
-mv /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.ori
-
-cat > /etc/httpd/conf.d/ssl.conf <<EOF
-Listen 443
-SSLPassPhraseDialog  builtin
-SSLSessionCache         shmcb:/var/cache/mod_ssl/scache(512000)
-SSLSessionCacheTimeout  300
-SSLRandomSeed startup file:/dev/urandom  256
-SSLRandomSeed connect builtin
-SSLCryptoDevice builtin
-EOF
+#mv /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.ori
+#
+#cat > /etc/httpd/conf.d/ssl.conf <<EOF
+#Listen 443
+#SSLPassPhraseDialog  builtin
+#SSLSessionCache         shmcb:/var/cache/mod_ssl/scache(512000)
+#SSLSessionCacheTimeout  300
+#SSLRandomSeed startup file:/dev/urandom  256
+#SSLRandomSeed connect builtin
+#SSLCryptoDevice builtin
+#EOF
 
 cat >> /etc/httpd/conf.d/virtualhost.conf <<EOF
 
