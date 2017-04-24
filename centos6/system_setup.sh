@@ -134,3 +134,4 @@ cat > /home/${ADMIN_USER}/.gitconfig <<EOF
 EOF
 echo "${GIT_USER_CONF}" >> /home/${ADMIN_USER}/.gitconfig
 chown ${ADMIN_USER}. /home/${ADMIN_USER}/.gitconfig
+cp /home/${ADMIN_USER}/.gitconfig /root/
