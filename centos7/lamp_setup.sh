@@ -50,6 +50,7 @@ sed -e "s/^\(\s\+\)\(CustomLog .\+\)$/\1#\2/" /tmp/httpd.conf.2.$$ > /tmp/httpd.
 cat >> /tmp/httpd.conf.3.$$ <<EOF
 
 ServerSignature Off
+ServerTokens Prod
 
 LogFormat "%V %h %l %u %t \"%r\" %>s %b %D \"%{Referer}i\" \"%{User-Agent}i\"" combined
 LogFormat "%V %h %l %u %t \"%!414r\" %>s %b %D" common
