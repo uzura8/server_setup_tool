@@ -157,7 +157,7 @@ next
 
 ### Log rotate setting ###
 #### httpd log
-cp /etc/logrotate.d/httpd /etc/logrotate.d/httpd.ori
+cp /etc/logrotate.d/httpd $DATA_DIR/backups/httpd.ori
 sed -e "s/^\(\s\+\)\(missingok\)/\1daily\n\1dateext\n\1rotate 16\n\1\2/" /etc/logrotate.d/httpd > /tmp/logrotate.d.httpd.$$
 cat /tmp/logrotate.d.httpd.$$
 next

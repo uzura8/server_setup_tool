@@ -53,3 +53,4 @@ input ca.car here
 -----END CERTIFICATE-----
 EOS
 `
+DATA_DIR="`dirname $0`/data"
