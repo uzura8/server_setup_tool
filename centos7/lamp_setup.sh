@@ -23,8 +23,9 @@ echo "umask 002" > /etc/profile.d/umask.sh
 mkdir -p /var/www/sites
 chown ${ADMIN_USER} /var/www/sites
 chgrp webadmin /var/www/sites
-chmod 775 /var/www/sites
-chmod g+w /var/www/sites
+chmod -R 775 /var/www/sites
+chmod -R g+w /var/www/sites
+chmod -R g+s /var/www/sites
 ls -ald /var/www/sites
 next
 
