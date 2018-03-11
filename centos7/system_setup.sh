@@ -78,7 +78,7 @@ iptables -P FORWARD DROP
 #### check setting
 iptables -L --line-numbers -n
 next
-systemctl save iptables.service
+service iptables save
 systemctl restart iptables.service
 systemctl enable iptables
 
