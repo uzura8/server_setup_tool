@@ -18,4 +18,4 @@ fi
  . $OS_NAME/system_setup.sh
  . $OS_NAME/lamp_setup.sh
 # . $OS_NAME/ssl_setup.sh
- . $OS_NAME/flockbird_setup.sh
+# . $OS_NAME/flockbird_setup.sh

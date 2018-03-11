@@ -46,6 +46,7 @@ systemctl restart sshd
 cat >> /home/${ADMIN_USER}/.bash_profile <<EOF
 export EDITOR=vim
 export PS1="[\u@\h \W]\\$ "
+alias V='vim -R -'
 EOF
 source ~/.bash_profile
 
@@ -77,5 +78,10 @@ set tabstop=2
 "set expandtab
 set hlsearch
 set backspace=indent,eol,start
+"" for us-keybord
+"nnoremap ; :
+"nnoremap : ;
+hi Comment ctermfg=DarkGray
 EOF
 chown ${ADMIN_USER}. /home/${ADMIN_USER}/.vimrc
+cp /home/${ADMIN_USER}/.vimrc /root/

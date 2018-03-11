@@ -1,23 +1,16 @@
 #lamp_setup.sh
-cp /etc/yum.repos.d/CentOS-Base.repo /tmp/CentOS-Base.repo.${DATE}.$$
-sed -e "s/^\(priority=1\)/\1\nexclude=php*" /etc/yum.repos.d/CentOS-Base.repo > /tmp/CentOS-Base.repo.$$
-mv /tmp/CentOS-Base.repo.$$ /etc/yum.repos.d/CentOS-Base.repo
-echo_and_exec "cat /etc/yum.repos.d/CentOS-Base.repo | grep -A2 priority=1"
-next
-rm /tmp/CentOS-Base.repo.${DATE}.$$
 
 ###  install LAMP packages ###
-yum install -y ImageMagick ImageMagick-devel
+yum install -y --enablerepo=remi ImageMagick ImageMagick-devel
 yum install -y --enablerepo=epel libmcrypt libtidy
 yum install --enablerepo=remi gd-last
 yum install -y httpd httpd-devel
 yum -y remove mariadb-libs
 rm -rf /var/lib/mysql/
 #yum -y install perl-Data-Dumper
-yum install -y http://repo.mysql.com/mysql-community-release-el7-7.noarch.rpm
-#yum -y install mysql-community-server
+yum -y localinstall http://dev.mysql.com/get/mysql57-community-release-el7-7.noarch.rpm
 yum install -y mysql mysql-server mysql-devel mysql-utilities
-yum install -y --enablerepo=remi,remi-php56 php php-devel php-pear php-gd php-mbstring php-xml php-mcrypt php-opcache php-pecl-apcu php-fpm php-phpunit-PHPUnit php-mysqlnd php-pdo
+yum install -y --enablerepo=remi,remi-php71 php php-cli php-common php-devel php-pear php-gd php-mbstring php-xml php-mcrypt php-opcache php-pecl-apcu php-fpm php-phpunit-PHPUnit php-mysqlnd php-mysql php-pdo php-gmp
 pecl install imagick
 
 ### Add webadmin group ###
@@ -28,10 +21,10 @@ gpasswd -a apache webadmin
 ### Create Web directries ###
 echo "umask 002" > /etc/profile.d/umask.sh
 mkdir -p /var/www/sites
-chown ${ADMIN_USER} /var/www/sites /var/www/html
-chgrp webadmin /var/www/sites /var/www/html
-chmod 775 /var/www/sites /var/www/html
-chmod g+w /var/www/sites /var/www/html
+chown ${ADMIN_USER} /var/www/sites
+chgrp webadmin /var/www/sites
+chmod 775 /var/www/sites
+chmod g+w /var/www/sites
 ls -ald /var/www/sites
 next
 
@@ -43,10 +36,9 @@ rm -f /var/www/error/noindex.html
 #### Edit httpd.conf
 cp /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf.ori
 
-
-sed -e "s/^#ServerName www.example.com:80/ServerName ${SERVISE_DOMAIN}:80/" /etc/httpd/conf/httpd.conf > /tmp/httpd.conf.$$
-sed -e "s/^\(AddDefaultCharset UTF-8\)/#\1/g" /tmp/httpd.conf.$$ > /tmp/httpd.conf.2.$$
-sed -e "s/^\(\s\+\)\(CustomLog .\+\)$/\1#\2/" /tmp/httpd.conf.2.$$ > /tmp/httpd.conf.3.$$
+sed -e "s|^#ServerName www.example.com:80|ServerName ${SERVISE_DOMAIN}:80|" /etc/httpd/conf/httpd.conf > /tmp/httpd.conf.$$
+sed -e "s|^\(AddDefaultCharset UTF-8\)|#\1|g" /tmp/httpd.conf.$$ > /tmp/httpd.conf.2.$$
+sed -e "s|^\(\s\+\)\(CustomLog .\+\)$|\1#\2|" /tmp/httpd.conf.2.$$ > /tmp/httpd.conf.3.$$
 cat >> /tmp/httpd.conf.3.$$ <<EOF
 
 ServerSignature Off
@@ -133,23 +125,30 @@ chown mysql. /var/log/mysql
 chmod 775 /var/log/mysql
 
 cp /etc/my.cnf /etc/my.cnf.ori
-sed -e "s/^\(\[mysqld_safe\]\)/character-set-server=utf8\nmax_allowed_packet=128MB\nlog-bin=mysql-bin\nexpire_logs_days=3\nslow_query_log=ON\nslow_query_log_file=\/var\/log\/mysql\/slow_query.log\nlong_query_time=1\n\n\1/" /etc/my.cnf > /tmp/my.cnf.$$
+cp /etc/my.cnf /tmp/my.cnf.$$
 cat >> /tmp/my.cnf.$$ <<EOF
 
-[client]
-default-character-set=utf8
-
-[mysql]
-default-character-set=utf8
-
-[mysqldump]
-default-character-set=utf8
+### Additional setting
+character-set-server=utf8
+default_password_lifetime=0
+log-timestamps=system
+lower_case_table_names=1
+max_allowed_packet=128MB
+explicit_defaults_for_timestamp=TRUE
+server-id=1
+log-bin=mysql-bin
+expire_logs_days=3
+slow_query_log=1
+slow_query_log_file=/var/log/mysql/slow_query.log
+long_query_time=1.0
 EOF
 cat /tmp/my.cnf.$$
 next
 mv /tmp/my.cnf.$$ /etc/my.cnf
 
-### start lamp ###
+### start mysql ###
+service mysqld start
+cat /var/log/mysqld.log | grep 'password is generated'
 mysql_secure_installation
 systemctl enable mysqld.service
 echo_and_exec "systemctl is-enabled mysqld.service"

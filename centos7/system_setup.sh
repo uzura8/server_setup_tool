@@ -1,21 +1,8 @@
 #system_setup.sh
 
 ### Add yum optional repository ###
-rpm -ivh http://ftp.riken.jp/Linux/fedora/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
-cp /etc/yum.repos.d/epel.repo /tmp/epel.repo.${DATE}.$$
-sed -e "s/^\(enabled\s*=\s*\)1/\10/g" /etc/yum.repos.d/epel.repo > /tmp/epel.repo.$$
-mv /tmp/epel.repo.$$ /etc/yum.repos.d/epel.repo
-echo_and_exec "grep enabled= /etc/yum.repos.d/epel.repo"
-next
-rm /tmp/epel.repo.${DATE}.$$
+yum install -y epel-release
 yum --enablerepo=epel -y update epel-release
-
-#cp /etc/yum.repos.d/rpmforge.repo /tmp/rpmforge.repo.${DATE}.$$
-#sed -e "s/^\(enabled\s*=\s*\)1/\10/g" /etc/yum.repos.d/rpmforge.repo > /tmp/rpmforge.repo.$$
-#mv /tmp/rpmforge.repo.$$ /etc/yum.repos.d/rpmforge.repo
-#echo_and_exec "grep enabled= /etc/yum.repos.d/rpmforge.repo"
-#next
-#rm /tmp/rpmforge.repo.${DATE}.$$
 
 rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
 yum --enablerepo=epel -y update remi-release
@@ -24,14 +11,15 @@ yum --enablerepo=epel -y update remi-release
 #yum update -y --enablerepo=rpmforge-extras git
 yum -y update
 yum -y install yum-cron
-/etc/rc.d/init.d/yum-cron start
-chkconfig yum-cron on
+systemctl start yum-cron
+systemctl enable yum-cron
+yum -y groupinstall base "Development tools"
 
 ### screen install
 yum install -y screen
 
 ### nkf install
-yum localinstall -y http://mirror.centos.org/centos/6/os/x86_64/Packages/nkf-2.0.8b-6.2.el6.x86_64.rpm
+yum install -y nkf --enablerepo=epel
 
 ### Setting logwatch ###
 yum -y install logwatch
@@ -44,12 +32,12 @@ setenforce 0
 echo_and_exec "getenforce"
 next
 
-cp /etc/sysconfig/selinux /tmp/selinux.${DATE}.$$
-sed -e "s/^SELINUX=enforcing/SELINUX=disabled/g" /etc/sysconfig/selinux > /tmp/selinux.$$
-mv /tmp/selinux.$$ /etc/sysconfig/selinux
-echo_and_exec "grep SELINUX= /etc/sysconfig/selinux"
-next
-rm /tmp/selinux.${DATE}.$$
+#cp /etc/sysconfig/selinux /tmp/selinux.${DATE}.$$
+#sed -e "s/^SELINUX=enforcing/SELINUX=disabled/g" /etc/sysconfig/selinux > /tmp/selinux.$$
+#mv /tmp/selinux.$$ /etc/sysconfig/selinux
+#echo_and_exec "grep SELINUX= /etc/sysconfig/selinux"
+#next
+#rm /tmp/selinux.${DATE}.$$
 
 ### Iptables install & setting ###
 systemctl stop firewalld.service
@@ -109,9 +97,9 @@ systemctl enable denyhosts
 ## TODO: add ntp setup
 
 ### postfix setting ###
-#### stop sendmail
-/etc/rc.d/init.d/sendmail stop
-yum -y remove sendmail
+##### stop sendmail
+#/etc/rc.d/init.d/sendmail stop
+#yum -y remove sendmail
 
 #### install postfix
 yum -y install postfix
@@ -126,13 +114,10 @@ next
 newaliases
 
 ### install sar ###
-yum -y install sysstat
+#yum -y install sysstat
 
-### install newrelic ###
-rpm -Uvh http://download.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm
-yum install -y newrelic-sysmond
-nrsysmond-config --set license_key=${NEWRELIC_LICENCE_KEY}
-/etc/init.d/newrelic-sysmond start
+#### install newrelic ###
+# TODO: inastll newrelic
 
 ### git setting
 cat > /home/${ADMIN_USER}/.gitconfig <<EOF
@@ -141,22 +126,20 @@ cat > /home/${ADMIN_USER}/.gitconfig <<EOF
   status = auto
   branch = auto
   interactive = auto
+[alias]
+  co = checkout
+  st = status
+  ci = commit -v
+  di = diff
+  di-file = diff --name-only
+  up = pull --rebase
+  br = branch
+  ll  = log --graph --pretty=full --stat
+  l  = log --oneline
 EOF
 echo "${GIT_USER_CONF}" >> /home/${ADMIN_USER}/.gitconfig
 chown ${ADMIN_USER}. /home/${ADMIN_USER}/.gitconfig
 cp /home/${ADMIN_USER}/.gitconfig /root/
 
 ### set ssh login alert mail
-cat > /usr/local/bin/ssh/alert.sh <<EOF
-#!/bin/bash
-SOURCE_IP=${SSH_CLIENT%% *}
-for HOST in $ALLOW_IPS
-do
-  if [ $HOST == $SOURCE_IP ]; then
-    exit 0
-  fi
-done
-echo \"\"$USER\" has logged in from $SSH_CLIENT at `date +\"%Y/%m/%d %p %I:%M:%S\"` \" | mail -s \"$SERVISE_DOMAIN sshd login alert\" -r root@$SERVISE_DOMAIN $ADMIN_EMAIL
-EOF
-chmod 755 /usr/local/bin/ssh/alert.sh
-echo "/bin/bash /usr/local/bin/ssh_alert.sh" >> /etc/ssh/sshrc
+echo 'echo "\"$USER\" has logged in from $SSH_CLIENT at `date "+%Y/%m/%d %H:%M:%S"` to '$SERVISE_DOMAIN' " | mail -s "'$SERVISE_DOMAIN' sshd login alert" -r root@'$SERVISE_DOMAIN' '$ADMIN_EMAIL >> /etc/ssh/sshrc
