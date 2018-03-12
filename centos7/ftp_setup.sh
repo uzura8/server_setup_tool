@@ -12,14 +12,21 @@ sed -e "s|^#\(chroot_list_file=/etc/vsftpd/chroot_list\)|\1|g" /tmp/vsftpd.conf.
 sed -e "s|^#\(ls_recurse_enable=YES\)|\1|g" /tmp/vsftpd.conf.7.$$ > /tmp/vsftpd.conf.8.$$
 sed -e "s|^listen=NO|listen=YES|g" /tmp/vsftpd.conf.8.$$ > /tmp/vsftpd.conf.9.$$
 sed -e "s|^\(listen_ipv6=YES\)|#\1|g" /tmp/vsftpd.conf.9.$$ > /tmp/vsftpd.conf.10.$$
-cat >> /tmp/vsftpd.conf.10.$$ <<EOF
+sed -e "s|^local_umask=022|local_umask=002|g" /tmp/vsftpd.conf.10.$$ > /tmp/vsftpd.conf.11.$$
+sed -e "s|^dirmessage_enable=YES|dirmessage_enable=NO|" /tmp/vsftpd.conf.11.$$ > /tmp/vsftpd.conf.12.$$
+sed -e "s|^connect_from_port_20=YES|connect_from_port_20=NO|" /tmp/vsftpd.conf.12.$$ > /tmp/vsftpd.conf.13.$$
+sed -e "s|^xferlog_std_format=YES|xferlog_std_format=NO|" /tmp/vsftpd.conf.13.$$ > /tmp/vsftpd.conf.14.$$
+sed -e "s|^listen=NO|listen=YES|" /tmp/vsftpd.conf.14.$$ > /tmp/vsftpd.conf.15.$$
+sed -e "s|^tcp_wrappers=YES|tcp_wrappers=NO|" /tmp/vsftpd.conf.15.$$ > /tmp/vsftpd.conf.16.$$
+cat >> /tmp/vsftpd.conf.16.$$ <<EOF
 
 # additional setting
 use_localtime=YES
 user_config_dir=/etc/vsftpd/vsftpd_user_conf
+force_dot_files=YES
 EOF
 
-mv /tmp/vsftpd.conf.10.$$ /etc/vsftpd/vsftpd.conf
+mv /tmp/vsftpd.conf.16.$$ /etc/vsftpd/vsftpd.conf
 
 ### add ftp user
 sudo useradd ftp_admin
@@ -43,6 +50,12 @@ rm -f /tmp/vsftpd.conf.6.$$
 rm -f /tmp/vsftpd.conf.7.$$
 rm -f /tmp/vsftpd.conf.8.$$
 rm -f /tmp/vsftpd.conf.9.$$
+rm -f /tmp/vsftpd.conf.10.$$
+rm -f /tmp/vsftpd.conf.11.$$
+rm -f /tmp/vsftpd.conf.12.$$
+rm -f /tmp/vsftpd.conf.13.$$
+rm -f /tmp/vsftpd.conf.14.$$
+rm -f /tmp/vsftpd.conf.15.$$
 
 ### iptables setting
 iptables -A INPUT -p tcp -m tcp --dport 20 -j ACCEPT
