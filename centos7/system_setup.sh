@@ -1,5 +1,10 @@
 #system_setup.sh
 
+### lang setting  ###
+localectl set-locale LANG=ja_JP.utf8
+cat /etc/locale.conf
+next
+
 ### Add yum optional repository ###
 yum install -y epel-release
 yum --enablerepo=epel -y update epel-release
