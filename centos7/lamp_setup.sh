@@ -176,11 +176,12 @@ EOF
 
 sudo chmod 600 /root/.my.cnf
 
-cat >> /etc/logrotate.d/mysqld <<EOF
+cat >> /etc/logrotate.d/mysql <<EOF
 /var/log/mysql/slow_query.log {
     create 640 mysql mysql
     notifempty
     rotate 16
+    su root root
     minsize 1M
     missingok
     compress
