@@ -194,3 +194,11 @@ cat >> /etc/logrotate.d/mysql <<EOF
 EOF
 cat /etc/logrotate.d/mysqld
 next
+
+mkdir -p /home/${ADMIN_USER}/backup/mysql
+cd /home/${ADMIN_USER}/backup/mysql
+git clone https://github.com/uzura8/db_daily_backup.git
+cd db_daily_backup
+sed -e "s|^DB_LIST=('sampl_db_name')|DB_LIST=('${APP_DB_NAME}')|" setting.conf.sample > setting.conf
+chown -R ${ADMIN_USER}. /home/${ADMIN_USER}/backup
+echo "0 4 * * * root /home/${ADMIN_USER}/backup/mysql/db_daily_backup/backup.sh" > /etc/cron.d/backupmysql
