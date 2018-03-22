@@ -121,6 +121,9 @@ newaliases
 ### install sar ###
 #yum -y install sysstat
 
+### install Mackerel ###
+curl -fsSL https://mackerel.io/file/script/setup-all-yum-v2.sh | MACKEREL_APIKEY="${MACKEREL_LICENCE_KEY}" sh
+
 #### install newrelic ###
 # TODO: inastll newrelic
 

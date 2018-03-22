@@ -15,7 +15,7 @@ ALLOW_IPS=`cat << EOS
 xxx.xxx.xxx.xxx
 EOS
 `
-NEWRELIC_LICENCE_KEY="input_newrelic_license_key"
+MACKEREL_LICENCE_KEY="input_newrelic_license_key"
 
 GIT_USER_CONF=`cat << EOS
 [user]
