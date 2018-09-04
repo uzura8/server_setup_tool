@@ -16,6 +16,9 @@ echo "${SSL_CRT}" > /etc/pki/tls/certs/${SERVISE_DOMAIN}.crt_${DATEYEAR}
 echo "${SSL_CA_CRT}" > /etc/pki/tls/certs/ca.crt_${DATEYEAR}
 chmod 600 /etc/pki/tls/certs/${SERVISE_DOMAIN}.crt_${DATEYEAR}
 
+### set original crt (for test env) ###
+#openssl x509 -req -days 3650 -in /etc/pki/tls/csr/${SERVISE_DOMAIN}.csr_${DATEYEAR} -signkey /etc/pki/tls/private/${SSL_KEY_FILENAME} -out /etc/pki/tls/certs/${SERVISE_DOMAIN}.crt_${DATEYEAR}
+
 ### mod_ssl setting ###
 yum -y install mod_ssl
 
