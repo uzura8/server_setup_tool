@@ -52,4 +52,4 @@ echo_and_exec "cat /etc/httpd/conf.d/ssl.conf"
 echo_and_exec "cat /etc/httpd/conf.d/virtualhost.conf"
 echo_and_exec "httpd -t"
 next
-systemctl restart httpd
+service httpd restart
