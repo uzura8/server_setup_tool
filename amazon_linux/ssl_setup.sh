@@ -23,8 +23,8 @@ chmod 600 /etc/pki/tls/certs/${SERVISE_DOMAIN}.crt_${DATEYEAR}
 yum -y install mod24_ssl
 
 ### edit ssl.conf ###
-mv /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.ori
-
+#mv /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.ori
+#
 #cat > /etc/httpd/conf.d/ssl.conf <<EOF
 #Listen 443
 #SSLPassPhraseDialog  builtin
@@ -50,6 +50,6 @@ EOF
 
 echo_and_exec "cat /etc/httpd/conf.d/ssl.conf"
 echo_and_exec "cat /etc/httpd/conf.d/virtualhost.conf"
-echo_and_exec "/etc/init.d/httpd configtest"
+echo_and_exec "httpd -t"
 next
 systemctl restart httpd
