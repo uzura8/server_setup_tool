@@ -3,10 +3,14 @@
 ###  install LAMP packages ###
 yum install -y ImageMagick ImageMagick-devel
 yum install -y --enablerepo=epel ack libmcrypt
-yum install -y httpd24 php56 mysql55-server php56-mysqlnd php56-devel php56-gd php56-opcache php56-mbstring php56-mcrypt php56-mysqlnd php56-ncurses php56-pdo php56-xml php56-pear php56-memcache php56-pecl-memcached
+
+## Remove comment out here, if install mysql on web server 
+#yum install -y mysql55-server mysql55
+
+yum install -y httpd24 php56 php56-mysqlnd php56-devel php56-gd php56-opcache php56-mbstring php56-mcrypt php56-ncurses php56-pdo php56-xml php56-pear php56-memcache php56-pecl-memcached
 pecl install imagick
 
-### Add webadmin group ###
+# Add webadmin group ###
 groupadd webadmin
 gpasswd -a ${ADMIN_USER} webadmin
 gpasswd -a apache webadmin
@@ -98,32 +102,9 @@ EOF
 echo_and_exec "cat /etc/php.d/my.ini"
 next
 
-### MySQL setting ###
-mkdir /var/log/mysql
-chown mysql. /var/log/mysql
-chmod 775 /var/log/mysql
-
-cp /etc/my.cnf /etc/my.cnf.ori
-sed -e "s/^\(\[mysqld_safe\]\)/character-set-server=utf8\nmax_allowed_packet=128MB\nlog-bin=mysql-bin\nexpire_logs_days=3\nslow_query_log=ON\nslow_query_log_file=\/var\/log\/mysql\/slow_query.log\nlong_query_time=1\n\n\1/" /etc/my.cnf > /tmp/my.cnf.$$
-cat >> /tmp/my.cnf.$$ <<EOF
-
-[client]
-default-character-set=utf8
-
-[mysqldump]
-default-character-set=utf8
-EOF
-cat /tmp/my.cnf.$$
-next
-mv /tmp/my.cnf.$$ /etc/my.cnf
-
 ### start lamp ###
 chkconfig httpd on
-chkconfig mysqld on
-/etc/init.d/mysqld start
 /etc/init.d/httpd start
-mysql_secure_installation
-
 
 ### Log rotate setting ###
 #### httpd log
@@ -133,33 +114,57 @@ cat /tmp/logrotate.d.httpd.$$
 next
 mv /tmp/logrotate.d.httpd.$$ /etc/logrotate.d/httpd
 
-#### mysql log
-cat > /root/.my.cnf <<EOF
-[mysqladmin]
-password=${MYSQL_ROOT_PASS}
-user=root
+## Remove comment out here, if install mysql on web server 
+#### MySQL setting ###
+#mkdir /var/log/mysql
+#chown mysql. /var/log/mysql
+#chmod 775 /var/log/mysql
+#
+#cp /etc/my.cnf /etc/my.cnf.ori
+#sed -e "s/^\(\[mysqld_safe\]\)/character-set-server=utf8\nmax_allowed_packet=128MB\nlog-bin=mysql-bin\nexpire_logs_days=3\nslow_query_log=ON\nslow_query_log_file=\/var\/log\/mysql\/slow_query.log\nlong_query_time=1\n\n\1/" /etc/my.cnf > /tmp/my.cnf.$$
+#cat >> /tmp/my.cnf.$$ <<EOF
+#
+#[client]
+#default-character-set=utf8
+#
+#[mysqldump]
+#default-character-set=utf8
+#EOF
+#cat /tmp/my.cnf.$$
+#next
+#mv /tmp/my.cnf.$$ /etc/my.cnf
 
-[mysqldump]
-password=${MYSQL_ROOT_PASS}
-user=root
-EOF
+##### mysql log
+#cat > /root/.my.cnf <<EOF
+#[mysqladmin]
+#password=${MYSQL_ROOT_PASS}
+#user=root
+#
+#[mysqldump]
+#password=${MYSQL_ROOT_PASS}
+#user=root
+#EOF
 
-sudo chmod 600 /root/.my.cnf
+#chkconfig mysqld on
+#/etc/init.d/mysqld start
+#mysql_secure_installation
 
-cat >> /etc/logrotate.d/mysqld <<EOF
-/var/log/mysql/slow_query.log {
-    create 640 mysql mysql
-    notifempty
-    rotate 16
-    minsize 1M
-    missingok
-    compress
-    sharedscripts
-    delaycompress
-    postrotate
-        /usr/bin/mysqladmin --defaults-extra-file=/root/.my.cnf flush-logs
-    endscript
-}
-EOF
-cat /etc/logrotate.d/mysqld
-next
+#sudo chmod 600 /root/.my.cnf
+#
+#cat >> /etc/logrotate.d/mysqld <<EOF
+#/var/log/mysql/slow_query.log {
+#    create 640 mysql mysql
+#    notifempty
+#    rotate 16
+#    minsize 1M
+#    missingok
+#    compress
+#    sharedscripts
+#    delaycompress
+#    postrotate
+#        /usr/bin/mysqladmin --defaults-extra-file=/root/.my.cnf flush-logs
+#    endscript
+#}
+#EOF
+#cat /etc/logrotate.d/mysqld
+#next

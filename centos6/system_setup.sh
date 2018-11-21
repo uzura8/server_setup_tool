@@ -137,4 +137,16 @@ chown ${ADMIN_USER}. /home/${ADMIN_USER}/.gitconfig
 cp /home/${ADMIN_USER}/.gitconfig /root/
 
 ### set ssh login alert mail
-echo 'echo "\"$USER\" has logged in from $SSH_CLIENT at `date "+%Y/%m/%d %H:%M:%S"` to '$SERVISE_DOMAIN' " | mail -s "'$SERVISE_DOMAIN' sshd login alert" -r root@'$SERVISE_DOMAIN' '$ADMIN_EMAIL >> /etc/ssh/sshrc
+cat > /usr/local/bin/ssh_alert.sh <<EOF
+#!/bin/bash
+SOURCE_IP=${SSH_CLIENT%% *}
+for HOST in $ALLOW_IPS
+do
+  if [ $HOST == $SOURCE_IP ]; then
+    exit 0
+  fi
+done
+echo \"\"$USER\" has logged in from $SSH_CLIENT at `date +\"%Y/%m/%d %p %I:%M:%S\"` \" | mail -s \"$SERVISE_DOMAIN sshd login alert\" -r root@$SERVISE_DOMAIN $ADMIN_EMAIL
+EOF
+chmod 755 /usr/local/bin/ssh_alert.sh
+echo "/bin/bash /usr/local/bin/ssh_alert.sh" >> /etc/ssh/sshrc
