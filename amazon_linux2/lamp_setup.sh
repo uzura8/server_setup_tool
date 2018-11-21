@@ -7,7 +7,7 @@ yum install -y --enablerepo=epel ack libmcrypt
 ## Remove comment out here, if install mysql on web server 
 #yum install -y mysql55-server mysql55
 
-yum install -y httpd24 php56 php56-mysqlnd php56-devel php56-gd php56-opcache php56-mbstring php56-mcrypt php56-ncurses php56-pdo php56-xml php56-pear php56-memcache php56-pecl-memcached
+yum install -y httpd php php-mysqlnd php-devel php-gd php-opcache php-mbstring php-mcrypt php-ncurses php-pdo php-xml php-pear php-memcache php-pecl-memcached
 pecl install imagick
 
 # Add webadmin group ###

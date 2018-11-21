@@ -81,7 +81,8 @@ set backspace=indent,eol,start
 "" for us-keybord
 "nnoremap ; :
 "nnoremap : ;
-hi Comment ctermfg=DarkGray
+"" Remove comment out as you like
+"hi Comment ctermfg=DarkGray
 EOF
 chown ${ADMIN_USER}. /home/${ADMIN_USER}/.vimrc
 cp /home/${ADMIN_USER}/.vimrc /root/

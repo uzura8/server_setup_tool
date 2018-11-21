@@ -118,11 +118,11 @@ next
 ### install sar ###
 yum -y install sysstat
 
-### install newrelic ###
-rpm -Uvh http://download.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm
-yum install -y newrelic-sysmond
-nrsysmond-config --set license_key=${NEWRELIC_LICENCE_KEY}
-/etc/init.d/newrelic-sysmond start
+#### install newrelic ###
+#rpm -Uvh http://download.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm
+#yum install -y newrelic-sysmond
+#nrsysmond-config --set license_key=${NEWRELIC_LICENCE_KEY}
+#/etc/init.d/newrelic-sysmond start
 
 ### git setting
 cat > /home/${ADMIN_USER}/.gitconfig <<EOF

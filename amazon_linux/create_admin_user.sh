@@ -49,5 +49,10 @@ set tabstop=2
 "set expandtab
 set hlsearch
 set backspace=indent,eol,start
+"" for us-keybord
+"nnoremap ; :
+"nnoremap : ;
+"" Remove comment out as you like
+"hi Comment ctermfg=DarkGray
 EOF
 chown ${ADMIN_USER}. /home/${ADMIN_USER}/.vimrc
