@@ -3,6 +3,16 @@
 ### install baseic  ###
 yum -y groupinstall "Base" "Development tools"
 yum -y install screen
+yum -y install etckeeper screen
+
+### install etckeeper ###
+touch /etc/.gitignore
+echo "shadow*" >> /etc/.gitignore
+echo "gshadow*" >> /etc/.gitignore
+echo "passwd*" >> /etc/.gitignore
+echo "group*" >> /etc/.gitignore
+etckeeper init
+etckeeper commit "First Commit"
 
 ### bash setting ###
 cat >> /home/${ADMIN_USER}/.bash_profile <<EOF

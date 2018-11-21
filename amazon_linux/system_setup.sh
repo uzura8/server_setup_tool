@@ -48,13 +48,13 @@ chkconfig iptables off
 echo_and_exec "chkconfig --list iptables"
 next
 
-#### denyhosts setting ###
-#yum -y --enablerepo=epel install denyhosts
-#echo "${ALLOW_IPS}" >> /var/lib/denyhosts/allowed-hosts
-#echo_and_exec "cat /var/lib/denyhosts/allowed-hosts"
-#next
-#/etc/init.d/denyhosts start
-#/sbin/chkconfig denyhosts on
+### denyhosts setting ###
+yum -y --enablerepo=epel install denyhosts
+echo "${ALLOW_IPS}" >> /var/lib/denyhosts/allowed-hosts
+echo_and_exec "cat /var/lib/denyhosts/allowed-hosts"
+next
+/etc/init.d/denyhosts start
+/sbin/chkconfig denyhosts on
 
 #### date setting ###
 ln -sf /usr/share/zoneinfo/Japan /etc/localtime
@@ -81,11 +81,11 @@ newaliases
 ### install sar ###
 yum -y install sysstat
 
-### install newrelic ###
-rpm -Uvh http://download.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm
-yum install -y newrelic-sysmond
-nrsysmond-config --set license_key=${NEWRELIC_LICENCE_KEY}
-/etc/init.d/newrelic-sysmond start
+#### install newrelic ###
+#rpm -Uvh http://download.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm
+#yum install -y newrelic-sysmond
+#nrsysmond-config --set license_key=${NEWRELIC_LICENCE_KEY}
+#/etc/init.d/newrelic-sysmond start
 
 ### git setting
 cat > /home/${ADMIN_USER}/.gitconfig <<EOF
@@ -100,7 +100,7 @@ chown ${ADMIN_USER}. /home/${ADMIN_USER}/.gitconfig
 cp /home/${ADMIN_USER}/.gitconfig /root/
 
 ### set ssh login alert mail
-cat > /usr/local/bin/ssh/alert.sh <<EOF
+cat > /usr/local/bin/ssh_alert.sh <<EOF
 #!/bin/bash
 SOURCE_IP=${SSH_CLIENT%% *}
 for HOST in $ALLOW_IPS
@@ -111,5 +111,5 @@ do
 done
 echo \"\"$USER\" has logged in from $SSH_CLIENT at `date +\"%Y/%m/%d %p %I:%M:%S\"` \" | mail -s \"$SERVISE_DOMAIN sshd login alert\" -r root@$SERVISE_DOMAIN $ADMIN_EMAIL
 EOF
-chmod 755 /usr/local/bin/ssh/alert.sh
+chmod 755 /usr/local/bin/ssh_alert.sh
 echo "/bin/bash /usr/local/bin/ssh_alert.sh" >> /etc/ssh/sshrc
