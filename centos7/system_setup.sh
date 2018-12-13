@@ -150,6 +150,7 @@ chown ${ADMIN_USER}. /home/${ADMIN_USER}/.gitconfig
 cp /home/${ADMIN_USER}/.gitconfig /root/
 
 ### set ssh login alert mail
+mkdir -p /usr/local/bin/
 cat > /usr/local/bin/ssh_alert.sh <<EOF
 #!/bin/bash
 SOURCE_IP=${SSH_CLIENT%% *}

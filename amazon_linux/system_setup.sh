@@ -31,6 +31,16 @@ yum -y install yum-cron
 /etc/rc.d/init.d/yum-cron start
 chkconfig yum-cron on
 
+### install etckeeper ###
+yum -y install etckeeper
+touch /etc/.gitignore
+echo "shadow*" >> /etc/.gitignore
+echo "gshadow*" >> /etc/.gitignore
+echo "passwd*" >> /etc/.gitignore
+echo "group*" >> /etc/.gitignore
+etckeeper init
+etckeeper commit "First Commit"
+
 ### Setting logwatch ###
 yum -y install logwatch
 echo "MailTo = ${ADMIN_EMAIL}" >> /etc/logwatch/conf/logwatch.conf
@@ -94,12 +104,23 @@ cat > /home/${ADMIN_USER}/.gitconfig <<EOF
   status = auto
   branch = auto
   interactive = auto
+[alias]
+  co = checkout
+  st = status
+  ci = commit -v
+  di = diff
+  di-file = diff --name-only
+  up = pull --rebase
+  br = branch
+  ll  = log --graph --pretty=full --stat
+  l  = log --oneline
 EOF
 echo "${GIT_USER_CONF}" >> /home/${ADMIN_USER}/.gitconfig
 chown ${ADMIN_USER}. /home/${ADMIN_USER}/.gitconfig
-cp /home/${ADMIN_USER}/.gitconfig /root/
+ln -s /home/${ADMIN_USER}/.gitconfig /root/
 
 ### set ssh login alert mail
+mkdir -p /usr/local/bin/
 cat > /usr/local/bin/ssh_alert.sh <<EOF
 #!/bin/bash
 SOURCE_IP=${SSH_CLIENT%% *}

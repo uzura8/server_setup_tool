@@ -3,16 +3,6 @@
 ### install baseic  ###
 yum -y groupinstall "Base" "Development tools"
 yum -y install screen
-yum -y install etckeeper screen
-
-### install etckeeper ###
-touch /etc/.gitignore
-echo "shadow*" >> /etc/.gitignore
-echo "gshadow*" >> /etc/.gitignore
-echo "passwd*" >> /etc/.gitignore
-echo "group*" >> /etc/.gitignore
-etckeeper init
-etckeeper commit "First Commit"
 
 ### bash setting ###
 cat >> /home/${ADMIN_USER}/.bash_profile <<EOF
@@ -56,3 +46,4 @@ set backspace=indent,eol,start
 "hi Comment ctermfg=DarkGray
 EOF
 chown ${ADMIN_USER}. /home/${ADMIN_USER}/.vimrc
+ln -s /home/${ADMIN_USER}/.vimrc /root/
