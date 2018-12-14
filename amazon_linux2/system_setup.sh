@@ -6,8 +6,8 @@ cat /etc/locale.conf
 next
 
 ### Add yum optional repository ###
-yum install -y epel-release
-yum --enablerepo=epel -y update epel-release
+#yum install -y epel-release
+#yum --enablerepo=epel -y update epel-release
 
 #rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
 #yum --enablerepo=epel -y update remi-release
@@ -34,7 +34,7 @@ etckeeper commit "First Commit"
 yum install -y screen
 
 ### nkf install
-yum install -y nkf --enablerepo=epel
+#yum install -y nkf --enablerepo=epel
 
 ### Setting logwatch ###
 yum -y install logwatch
@@ -54,13 +54,13 @@ echo_and_exec "systemctl list-unit-files | grep firewalld"
 next
 
 ### denyhosts setting ###
-yum -y --enablerepo=epel install denyhosts
+#yum -y --enablerepo=epel install denyhosts
 yum -y install rsyslog
 systemctl start rsyslog
 systemctl enable rsyslog
-echo "${ALLOW_IPS}" >> /var/lib/denyhosts/allowed-hosts
-echo_and_exec "cat /var/lib/denyhosts/allowed-hosts"
-next
+#echo "${ALLOW_IPS}" >> /var/lib/denyhosts/allowed-hosts
+#echo_and_exec "cat /var/lib/denyhosts/allowed-hosts"
+#next
 systemctl start denyhosts
 systemctl enable denyhosts
 
