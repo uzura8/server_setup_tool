@@ -37,13 +37,6 @@ setenforce 0
 echo_and_exec "getenforce"
 next
 
-#cp /etc/sysconfig/selinux /tmp/selinux.${DATE}.$$
-#sed -e "s/^SELINUX=enforcing/SELINUX=disabled/g" /etc/sysconfig/selinux > /tmp/selinux.$$
-#mv /tmp/selinux.$$ /etc/sysconfig/selinux
-#echo_and_exec "grep SELINUX= /etc/sysconfig/selinux"
-#next
-#rm /tmp/selinux.${DATE}.$$
-
 ### Iptables install & setting ###
 systemctl stop firewalld.service
 systemctl mask firewalld.service
@@ -122,10 +115,9 @@ newaliases
 #yum -y install sysstat
 
 ### install Mackerel ###
-curl -fsSL https://mackerel.io/file/script/setup-all-yum-v2.sh | MACKEREL_APIKEY="${MACKEREL_LICENCE_KEY}" sh
-
-#### install newrelic ###
-# TODO: inastll newrelic
+if [ -n "MACKEREL_LICENCE_KEY" ]; then
+	curl -fsSL https://mackerel.io/file/script/setup-all-yum-v2.sh | MACKEREL_APIKEY="${MACKEREL_LICENCE_KEY}" sh
+fi
 
 ### git setting
 cat > /home/${ADMIN_USER}/.gitconfig <<EOF
@@ -147,7 +139,7 @@ cat > /home/${ADMIN_USER}/.gitconfig <<EOF
 EOF
 echo "${GIT_USER_CONF}" >> /home/${ADMIN_USER}/.gitconfig
 chown ${ADMIN_USER}. /home/${ADMIN_USER}/.gitconfig
-cp /home/${ADMIN_USER}/.gitconfig /root/
+ln -s /home/${ADMIN_USER}/.gitconfig /root/
 
 ### set ssh login alert mail
 mkdir -p /usr/local/bin/

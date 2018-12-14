@@ -4,7 +4,7 @@
 OS_NAME="centos6"
 ADMIN_USER="srv_admin"
 ## Setting for Amazon Linux on EC2
-#OS_NAME="amazon_linux"
+#OS_NAME="amazon_linux2"
 #ADMIN_USER="ec2-user"
 
 ## Below setting is required to exrute system setup script
@@ -15,7 +15,7 @@ ALLOW_IPS=`cat << EOS
 xxx.xxx.xxx.xxx
 EOS
 `
-MACKEREL_LICENCE_KEY="input_newrelic_license_key"
+MACKEREL_LICENCE_KEY=""
 
 GIT_USER_CONF=`cat << EOS
 [user]

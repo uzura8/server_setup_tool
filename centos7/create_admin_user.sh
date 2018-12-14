@@ -44,8 +44,8 @@ systemctl restart sshd
 
 ### bash setting ###
 cat >> /home/${ADMIN_USER}/.bash_profile <<EOF
-export EDITOR=vim
 export PS1="[\u@\h \W]\\$ "
+export EDITOR=vim
 alias V='vim -R -'
 EOF
 source ~/.bash_profile
@@ -85,4 +85,4 @@ set backspace=indent,eol,start
 "hi Comment ctermfg=DarkGray
 EOF
 chown ${ADMIN_USER}. /home/${ADMIN_USER}/.vimrc
-cp /home/${ADMIN_USER}/.vimrc /root/
+ln -s /home/${ADMIN_USER}/.vimrc /root/
