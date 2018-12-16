@@ -115,7 +115,7 @@ newaliases
 #yum -y install sysstat
 
 ### install Mackerel ###
-if [ -n "MACKEREL_LICENCE_KEY" ]; then
+if [ -n "$MACKEREL_LICENCE_KEY" ]; then
 	curl -fsSL https://mackerel.io/file/script/setup-all-yum-v2.sh | MACKEREL_APIKEY="${MACKEREL_LICENCE_KEY}" sh
 fi
 

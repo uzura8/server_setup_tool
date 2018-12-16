@@ -20,18 +20,15 @@ systemctl start yum-cron
 systemctl enable yum-cron
 yum -y groupinstall base "Development tools"
 
-### install etckeeper ###
-yum -y install etckeeper
-touch /etc/.gitignore
-echo "shadow*" >> /etc/.gitignore
-echo "gshadow*" >> /etc/.gitignore
-echo "passwd*" >> /etc/.gitignore
-echo "group*" >> /etc/.gitignore
-etckeeper init
-etckeeper commit "First Commit"
-
-### screen install
-yum install -y screen
+#### install etckeeper ###
+#yum -y install etckeeper
+#touch /etc/.gitignore
+#echo "shadow*" >> /etc/.gitignore
+#echo "gshadow*" >> /etc/.gitignore
+#echo "passwd*" >> /etc/.gitignore
+#echo "group*" >> /etc/.gitignore
+#etckeeper init
+#etckeeper commit "First Commit"
 
 ### nkf install
 #yum install -y nkf --enablerepo=epel
@@ -58,11 +55,12 @@ next
 yum -y install rsyslog
 systemctl start rsyslog
 systemctl enable rsyslog
+
 #echo "${ALLOW_IPS}" >> /var/lib/denyhosts/allowed-hosts
 #echo_and_exec "cat /var/lib/denyhosts/allowed-hosts"
 #next
-systemctl start denyhosts
-systemctl enable denyhosts
+#systemctl start denyhosts
+#systemctl enable denyhosts
 
 #### date setting ###
 #ln -sf /usr/share/zoneinfo/Japan /etc/localtime
@@ -83,31 +81,9 @@ newaliases
 #yum -y install sysstat
 
 ### install Mackerel ###
-if [ -n "MACKEREL_LICENCE_KEY" ]; then
+if [ -n "$MACKEREL_LICENCE_KEY" ]; then
 	curl -fsSL https://mackerel.io/file/script/setup-all-yum-v2.sh | MACKEREL_APIKEY="${MACKEREL_LICENCE_KEY}" sh
 fi
-
-### git setting
-cat > /home/${ADMIN_USER}/.gitconfig <<EOF
-[color]
-  diff = auto
-  status = auto
-  branch = auto
-  interactive = auto
-[alias]
-  co = checkout
-  st = status
-  ci = commit -v
-  di = diff
-  di-file = diff --name-only
-  up = pull --rebase
-  br = branch
-  ll  = log --graph --pretty=full --stat
-  l  = log --oneline
-EOF
-echo "${GIT_USER_CONF}" >> /home/${ADMIN_USER}/.gitconfig
-chown ${ADMIN_USER}. /home/${ADMIN_USER}/.gitconfig
-ln -s /home/${ADMIN_USER}/.gitconfig /root/
 
 ### set ssh login alert mail
 mkdir -p /usr/local/bin/

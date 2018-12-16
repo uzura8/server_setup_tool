@@ -48,3 +48,25 @@ set backspace=indent,eol,start
 EOF
 chown ${ADMIN_USER}. /home/${ADMIN_USER}/.vimrc
 ln -s /home/${ADMIN_USER}/.vimrc /root/
+
+### git setting
+cat > /home/${ADMIN_USER}/.gitconfig <<EOF
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+  interactive = auto
+[alias]
+  co = checkout
+  st = status
+  ci = commit -v
+  di = diff
+  di-file = diff --name-only
+  up = pull --rebase
+  br = branch
+  ll  = log --graph --pretty=full --stat
+  l  = log --oneline
+EOF
+echo "${GIT_USER_CONF}" >> /home/${ADMIN_USER}/.gitconfig
+chown ${ADMIN_USER}. /home/${ADMIN_USER}/.gitconfig
+ln -s /home/${ADMIN_USER}/.gitconfig /root/
