@@ -1,14 +1,13 @@
 #lamp_setup.sh
 
+amazon-linux-extras enable php7.2
+#amazon-linux-extras install php7.2
+
 ###  install LAMP packages ###
 yum install -y ImageMagick ImageMagick-devel
-yum install -y --enablerepo=epel ack libmcrypt
-
-## Remove comment out here, if install mysql on web server 
-#yum install -y mysql55-server mysql55
-
-yum install -y httpd php php-mysqlnd php-devel php-gd php-opcache php-mbstring php-mcrypt php-ncurses php-pdo php-xml php-pear php-memcache php-pecl-memcached
-pecl install imagick
+yum install -y ack libmcrypt
+yum install -y httpd httpd-devel zlib-devel
+yum install -y php php-mysqlnd php-devel php-gd php-opcache php-mbstring php-pdo php-pear php-pecl-imagick
 
 # Add webadmin group ###
 groupadd webadmin
@@ -95,6 +94,8 @@ post_max_size = 20M
 upload_max_filesize = 20M
 max_execution_time = 300
 date.timezone = Asia/Tokyo
+error_reporting = E_ALL & ~E_NOTICE
+error_log = "/var/log/php/php_errors.log" 
 [mbstring]
 mbstring.language = Japanese
 mbstring.internal_encoding = utf-8
@@ -102,9 +103,9 @@ EOF
 echo_and_exec "cat /etc/php.d/my.ini"
 next
 
-### start lamp ###
-chkconfig httpd on
-/etc/init.d/httpd start
+### start httpd ###
+systemctl start httpd
+systemctl enable httpd
 
 ### Log rotate setting ###
 #### httpd log
@@ -113,6 +114,9 @@ sed -e "s/^\(\s\+\)\(missingok\)/\1daily\n\1dateext\n\1rotate 16\n\1\2/" /etc/lo
 cat /tmp/logrotate.d.httpd.$$
 next
 mv /tmp/logrotate.d.httpd.$$ /etc/logrotate.d/httpd
+
+## Remove comment out here, if install mysql on web server 
+#yum install -y mysql55-server mysql55
 
 ## Remove comment out here, if install mysql on web server 
 #### MySQL setting ###
