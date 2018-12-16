@@ -6,8 +6,8 @@ cat /etc/locale.conf
 next
 
 ### Add yum optional repository ###
-#yum install -y epel-release
-#yum --enablerepo=epel -y update epel-release
+amazon-linux-extras enable epel
+yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
 #rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
 #yum --enablerepo=epel -y update remi-release
@@ -20,18 +20,18 @@ systemctl start yum-cron
 systemctl enable yum-cron
 yum -y groupinstall base "Development tools"
 
-#### install etckeeper ###
-#yum -y install etckeeper
-#touch /etc/.gitignore
-#echo "shadow*" >> /etc/.gitignore
-#echo "gshadow*" >> /etc/.gitignore
-#echo "passwd*" >> /etc/.gitignore
-#echo "group*" >> /etc/.gitignore
-#etckeeper init
-#etckeeper commit "First Commit"
+### install etckeeper ###
+yum --enablerepo=epel -y install etckeeper
+touch /etc/.gitignore
+echo "shadow*" >> /etc/.gitignore
+echo "gshadow*" >> /etc/.gitignore
+echo "passwd*" >> /etc/.gitignore
+echo "group*" >> /etc/.gitignore
+etckeeper init
+etckeeper commit "First Commit"
 
 ### nkf install
-#yum install -y nkf --enablerepo=epel
+yum install -y nkf --enablerepo=epel
 
 ### Setting logwatch ###
 yum -y install logwatch
@@ -85,18 +85,18 @@ if [ -n "$MACKEREL_LICENCE_KEY" ]; then
 	curl -fsSL https://mackerel.io/file/script/setup-all-yum-v2.sh | MACKEREL_APIKEY="${MACKEREL_LICENCE_KEY}" sh
 fi
 
-### set ssh login alert mail
-mkdir -p /usr/local/bin/
-cat > /usr/local/bin/ssh_alert.sh <<EOF
-#!/bin/bash
-SOURCE_IP=${SSH_CLIENT%% *}
-for HOST in $ALLOW_IPS
-do
-  if [ $HOST == $SOURCE_IP ]; then
-    exit 0
-  fi
-done
-echo \"\"$USER\" has logged in from $SSH_CLIENT at `date +\"%Y/%m/%d %p %I:%M:%S\"` \" | mail -s \"$SERVISE_DOMAIN sshd login alert\" -r root@$SERVISE_DOMAIN $ADMIN_EMAIL
-EOF
-chmod 755 /usr/local/bin/ssh_alert.sh
-echo "/bin/bash /usr/local/bin/ssh_alert.sh" >> /etc/ssh/sshrc
+#### set ssh login alert mail
+#mkdir -p /usr/local/bin/
+#cat > /usr/local/bin/ssh_alert.sh <<EOF
+##!/bin/bash
+#SOURCE_IP=${SSH_CLIENT%% *}
+#for HOST in $ALLOW_IPS
+#do
+#  if [ $HOST == $SOURCE_IP ]; then
+#    exit 0
+#  fi
+#done
+#echo \"\"$USER\" has logged in from $SSH_CLIENT at `date +\"%Y/%m/%d %p %I:%M:%S\"` \" | mail -s \"$SERVISE_DOMAIN sshd login alert\" -r root@$SERVISE_DOMAIN $ADMIN_EMAIL
+#EOF
+#chmod 755 /usr/local/bin/ssh_alert.sh
+#echo "/bin/bash /usr/local/bin/ssh_alert.sh" >> /etc/ssh/sshrc
