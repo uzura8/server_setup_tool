@@ -86,6 +86,7 @@ if [ -n "$MACKEREL_LICENCE_KEY" ]; then
 fi
 
 #### set ssh login alert mail
+echo 'echo "\"$USER\" has logged in from $SSH_CLIENT at `date "+%Y/%m/%d %H:%M:%S"` to '$SERVISE_DOMAIN' " | mail -s "'$SERVISE_DOMAIN' sshd login alert" -r root@'$SERVISE_DOMAIN' '$ADMIN_EMAIL >> /etc/ssh/sshrc
 #mkdir -p /usr/local/bin/
 #cat > /usr/local/bin/ssh_alert.sh <<EOF
 ##!/bin/bash
