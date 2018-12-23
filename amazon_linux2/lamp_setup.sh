@@ -95,7 +95,7 @@ upload_max_filesize = 20M
 max_execution_time = 300
 date.timezone = Asia/Tokyo
 error_reporting = E_ALL & ~E_NOTICE
-error_log = "/var/log/php/php_errors.log" 
+;error_log = "/var/log/php/php_errors.log" 
 [mbstring]
 mbstring.language = Japanese
 mbstring.internal_encoding = utf-8
