@@ -67,6 +67,8 @@ cat > /home/${ADMIN_USER}/.gitconfig <<EOF
   ll  = log --graph --pretty=full --stat
   l  = log --oneline
 EOF
-echo "${GIT_USER_CONF}" >> /home/${ADMIN_USER}/.gitconfig
+echo "[user]" >> /home/${ADMIN_USER}/.gitconfig
+echo "  email = ${GIT_USER_EMAIL}" >> /home/${ADMIN_USER}/.gitconfig
+echo "  name = ${GIT_USER_NAME}" >> /home/${ADMIN_USER}/.gitconfig
 chown ${ADMIN_USER}. /home/${ADMIN_USER}/.gitconfig
 ln -s /home/${ADMIN_USER}/.gitconfig /root/

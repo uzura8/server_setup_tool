@@ -131,22 +131,36 @@ cat > /home/${ADMIN_USER}/.gitconfig <<EOF
   status = auto
   branch = auto
   interactive = auto
+[alias]
+  co = checkout
+  st = status
+  ci = commit -v
+  di = diff
+  di-file = diff --name-only
+  up = pull --rebase
+  br = branch
+  ll  = log --graph --pretty=full --stat
+  l  = log --oneline
 EOF
-echo "${GIT_USER_CONF}" >> /home/${ADMIN_USER}/.gitconfig
+echo "[user]" >> /home/${ADMIN_USER}/.gitconfig
+echo "  email = ${GIT_USER_EMAIL}" >> /home/${ADMIN_USER}/.gitconfig
+echo "  name = ${GIT_USER_NAME}" >> /home/${ADMIN_USER}/.gitconfig
 chown ${ADMIN_USER}. /home/${ADMIN_USER}/.gitconfig
-cp /home/${ADMIN_USER}/.gitconfig /root/
+ln -s /home/${ADMIN_USER}/.gitconfig /root/
 
 ### set ssh login alert mail
-cat > /usr/local/bin/ssh_alert.sh <<EOF
-#!/bin/bash
-SOURCE_IP=${SSH_CLIENT%% *}
-for HOST in $ALLOW_IPS
-do
-  if [ $HOST == $SOURCE_IP ]; then
-    exit 0
-  fi
-done
-echo \"\"$USER\" has logged in from $SSH_CLIENT at `date +\"%Y/%m/%d %p %I:%M:%S\"` \" | mail -s \"$SERVISE_DOMAIN sshd login alert\" -r root@$SERVISE_DOMAIN $ADMIN_EMAIL
-EOF
-chmod 755 /usr/local/bin/ssh_alert.sh
-echo "/bin/bash /usr/local/bin/ssh_alert.sh" >> /etc/ssh/sshrc
+echo 'echo "\"$USER\" has logged in from $SSH_CLIENT at `date "+%Y/%m/%d %H:%M:%S"` to '$SERVISE_DOMAIN' " | mail -s "'$SERVISE_DOMAIN' sshd login alert" -r root@'$SERVISE_DOMAIN' '$ADMIN_EMAIL >> /etc/ssh/sshrc
+#mkdir -p /usr/local/bin/
+#cat > /usr/local/bin/ssh_alert.sh <<EOF
+##!/bin/bash
+#SOURCE_IP=${SSH_CLIENT%% *}
+#for HOST in $ALLOW_IPS
+#do
+#  if [ $HOST == $SOURCE_IP ]; then
+#    exit 0
+#  fi
+#done
+#echo \"\"$USER\" has logged in from $SSH_CLIENT at `date +\"%Y/%m/%d %p %I:%M:%S\"` \" | mail -s \"$SERVISE_DOMAIN sshd login alert\" -r root@$SERVISE_DOMAIN $ADMIN_EMAIL
+#EOF
+#chmod 755 /usr/local/bin/ssh_alert.sh
+#echo "/bin/bash /usr/local/bin/ssh_alert.sh" >> /etc/ssh/sshrc

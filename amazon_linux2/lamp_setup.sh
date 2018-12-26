@@ -86,7 +86,6 @@ rm -f /tmp/httpd.conf.3.$$
 
 ### PHP setting ###
 cat > /etc/php.d/my.ini <<EOF
-extension=imagick.so
 short_open_tag = Off
 expose_php = Off
 memory_limit = 128M

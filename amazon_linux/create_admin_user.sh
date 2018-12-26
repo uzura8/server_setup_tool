@@ -6,8 +6,9 @@ yum -y install screen
 
 ### bash setting ###
 cat >> /home/${ADMIN_USER}/.bash_profile <<EOF
-export EDITOR=vim
 export PS1="[\u@\h \W]\\$ "
+export EDITOR=vim
+alias V='vim -R -'
 EOF
 source ~/.bash_profile
 
@@ -47,3 +48,27 @@ set backspace=indent,eol,start
 EOF
 chown ${ADMIN_USER}. /home/${ADMIN_USER}/.vimrc
 ln -s /home/${ADMIN_USER}/.vimrc /root/
+
+### git setting
+cat > /home/${ADMIN_USER}/.gitconfig <<EOF
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+  interactive = auto
+[alias]
+  co = checkout
+  st = status
+  ci = commit -v
+  di = diff
+  di-file = diff --name-only
+  up = pull --rebase
+  br = branch
+  ll  = log --graph --pretty=full --stat
+  l  = log --oneline
+EOF
+echo "[user]" >> /home/${ADMIN_USER}/.gitconfig
+echo "  email = ${GIT_USER_EMAIL}" >> /home/${ADMIN_USER}/.gitconfig
+echo "  name = ${GIT_USER_NAME}" >> /home/${ADMIN_USER}/.gitconfig
+chown ${ADMIN_USER}. /home/${ADMIN_USER}/.gitconfig
+ln -s /home/${ADMIN_USER}/.gitconfig /root/

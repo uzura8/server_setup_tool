@@ -38,6 +38,8 @@ echo "shadow*" >> /etc/.gitignore
 echo "gshadow*" >> /etc/.gitignore
 echo "passwd*" >> /etc/.gitignore
 echo "group*" >> /etc/.gitignore
+git config --global user.email "${GIT_USER_EMAIL}"
+git config --global user.name "${GIT_USER_NAME}"
 etckeeper init
 etckeeper commit "First Commit"
 
@@ -96,28 +98,6 @@ yum -y install sysstat
 #yum install -y newrelic-sysmond
 #nrsysmond-config --set license_key=${NEWRELIC_LICENCE_KEY}
 #/etc/init.d/newrelic-sysmond start
-
-### git setting
-cat > /home/${ADMIN_USER}/.gitconfig <<EOF
-[color]
-  diff = auto
-  status = auto
-  branch = auto
-  interactive = auto
-[alias]
-  co = checkout
-  st = status
-  ci = commit -v
-  di = diff
-  di-file = diff --name-only
-  up = pull --rebase
-  br = branch
-  ll  = log --graph --pretty=full --stat
-  l  = log --oneline
-EOF
-echo "${GIT_USER_CONF}" >> /home/${ADMIN_USER}/.gitconfig
-chown ${ADMIN_USER}. /home/${ADMIN_USER}/.gitconfig
-ln -s /home/${ADMIN_USER}/.gitconfig /root/
 
 ### set ssh login alert mail
 mkdir -p /usr/local/bin/

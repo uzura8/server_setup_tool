@@ -45,8 +45,9 @@ next
 
 ### bash setting ###
 cat >> /home/${ADMIN_USER}/.bash_profile <<EOF
-export EDITOR=vim
 export PS1="[\u@\h \W]\\$ "
+export EDITOR=vim
+alias V='vim -R -'
 EOF
 source ~/.bash_profile
 

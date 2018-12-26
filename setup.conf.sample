@@ -17,11 +17,8 @@ EOS
 `
 MACKEREL_LICENCE_KEY=""
 
-GIT_USER_CONF=`cat << EOS
-[user]
-  email = mail@example.com
-  name = Git Username
-EOS
+GIT_USER_EMAIL=$ADMIN_EMAIL
+GIT_USER_NAME="Git Username"
 `
 
 APP_DB_NAME="dbname"
