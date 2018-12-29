@@ -34,6 +34,21 @@ yum -y install mod_ssl
 #SSLRandomSeed startup file:/dev/urandom  256
 #SSLRandomSeed connect builtin
 #SSLCryptoDevice builtin
+#
+#LogFormat "%V %h %l %u %t \"%r\" %>s %b %D \"%{Referer}i\" \"%{User-Agent}i\"" combined
+#LogFormat "%V %h %l %u %t \"%!414r\" %>s %b %D" common
+#LogFormat "%{Referer}i -> %U" referer
+#LogFormat "%{User-agent}i" agent
+## No log from worm access
+#SetEnvIf Request_URI "default\.ida" no_log
+#SetEnvIf Request_URI "cmd\.exe" no_log
+#SetEnvIf Request_URI "root\.exe" no_log
+#SetEnvIf Request_URI "Admin\.dll" no_log
+#SetEnvIf Request_URI "NULL\.IDA" no_log
+## No log from intarnal access
+##SetEnvIf Remote_Addr 127.0.0.1 no_log
+## Log other access
+#CustomLog logs/ssl_access_log combined env=!no_log
 #EOF
 
 cat >> /etc/httpd/conf.d/virtualhost.conf <<EOF
