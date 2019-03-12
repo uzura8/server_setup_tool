@@ -17,6 +17,7 @@ fi
 
  . $OS_NAME/system_setup.sh
  . $OS_NAME/lamp_setup.sh
+ . $OS_NAME/rds_client_setup.sh
 # . $OS_NAME/ssl_setup.sh
 ## . $OS_NAME/ssl_setup_letsencrypt.sh # for Let's Encrypt
 # . $OS_NAME/ftp_setup.sh
