@@ -16,8 +16,12 @@ yum --enablerepo=epel -y update remi-release
 #yum update -y --enablerepo=rpmforge-extras git
 yum -y update
 yum -y install yum-cron
+cp /etc/yum/yum-cron.conf /etc/yum/yum-cron.conf.ori
+sed -e "s|^apply_updates = no|apply_updates = yes|" /etc/yum/yum-cron.conf > /tmp/yum-cron.conf.$$
+mv /tmp/yum-cron.conf.$$ /etc/yum/yum-cron.conf
 systemctl start yum-cron
 systemctl enable yum-cron
+
 yum -y groupinstall base "Development tools"
 
 ### screen install
