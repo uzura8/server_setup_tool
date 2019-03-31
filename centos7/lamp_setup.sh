@@ -120,6 +120,12 @@ systemctl enable httpd
 echo_and_exec "systemctl is-enabled httpd"
 next
 
+### httpd process log ###
+mkdir /home/${ADMIN_USER}/bin
+cd /home/${ADMIN_USER}/bin
+wget https://gist.githubusercontent.com/uzura8/ed7fd32c40dce11d010c0b32670d30d0/raw/c2d669be2940fc440dba20b2270a60014c46cfda/output_httpd_process_memory_log.sh
+echo "* * * * * root /bin/sh /home/${ADMIN_USER}/bin/output_httpd_process_memory_log.sh > /dev/null" > /etc/cron.d/httpd_process_memory_log
+
 ### MySQL setting ###
 mkdir /var/log/mysql
 chown mysql. /var/log/mysql
