@@ -21,6 +21,15 @@ echo_and_exec "httpd -t"
 next
 service httpd graceful
 
+#### add for etckeeper commit script
+mkdir /root/bin/
+cat >> /root/bin/letsencrypt_etckeeper_commit.sh <<EOF
+#!/bin/sh
+cd /etc/
+git ci -m 'updated letsencrypt' .etckeeper ./letsencrypt
+EOF
+chmod 755 /root/bin/letsencrypt_etckeeper_commit.sh
+
 #### add update ssl script to cron
-echo "00 04 01 * * /usr/bin/certbot-auto renew --force-renew && /sbin/service httpd graceful" >> /etc/crontab
+echo "00 04 01 * * /usr/bin/certbot-auto renew --force-renew && /sbin/service httpd graceful &&  && /root/bin/letsencrypt_etckeeper_commit.sh" >> /etc/crontab
 next
