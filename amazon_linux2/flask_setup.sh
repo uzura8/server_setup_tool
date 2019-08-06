@@ -8,7 +8,7 @@ cat >> /etc/httpd/conf.d/virtualhost.conf <<EOF
 
 LoadModule wsgi_module ${MOD_WSGI_PATH}
 <VirtualHost *:80>
-  ServerName example.com
+  ServerName ${SERVISE_DOMAIN}
   DocumentRoot /var/www/sites/${SERVISE_DOMAIN}
   WSGIScriptAlias / /var/www/sites/${SERVISE_DOMAIN}/adapter.wsgi
   <Directory "/var/www/sites/${SERVISE_DOMAIN}/">
