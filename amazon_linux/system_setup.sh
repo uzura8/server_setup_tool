@@ -78,6 +78,13 @@ yum -y remove sendmail
 
 #### install postfix
 yum -y install postfix
+cp /etc/postfix/main.cf /etc/postfix/main.cf.ori
+cat >> /etc/postfix/main.cf <<EOF
+
+smtpd_tls_received_header = yes
+smtp_use_tls = yes
+
+EOF
 chkconfig postfix on
 echo_and_exec "chkconfig --list postfix"
 next

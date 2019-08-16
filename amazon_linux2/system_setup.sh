@@ -73,6 +73,14 @@ systemctl enable rsyslog
 
 #### install postfix
 yum -y install postfix
+cp /etc/postfix/main.cf /etc/postfix/main.cf.ori
+cat >> /etc/postfix/main.cf <<EOF
+
+#smtp_tls_security_level = may # For postfix v2.3
+smtpd_tls_received_header = yes
+smtp_use_tls = yes
+
+EOF
 systemctl start postfix
 systemctl enable postfix
 
