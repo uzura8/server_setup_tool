@@ -1,6 +1,12 @@
 curl https://dl.eff.org/certbot-auto -o /usr/bin/certbot-auto
 chmod 700 /usr/bin/certbot-auto
-certbot-auto certonly --webroot -w /var/www/sites/${SERVISE_DOMAIN}/public -d $SERVISE_DOMAIN --email $ADMIN_EMAIL -n --agree-tos --debug
+
+if [ -z ${SERVISE_SUBDOMAIN} ]; then
+  certbot-auto certonly --webroot -w /var/www/sites/${SERVISE_DOMAIN}/public -d $SERVISE_DOMAIN --email $ADMIN_EMAIL -n --agree-tos --debug
+else
+  certbot-auto certonly --webroot -w /var/www/sites/${SERVISE_DOMAIN}/public -d $SERVISE_DOMAIN -d $SERVISE_SUBDOMAIN --email $ADMIN_EMAIL -n --agree-tos --debug
+fi
+
 
 ### mod_ssl setting ###
 yum -y install mod24_ssl

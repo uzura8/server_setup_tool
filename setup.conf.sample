@@ -11,6 +11,8 @@ ADMIN_USER="srv_admin"
 SERVISE_DOMAIN="example.com"
 ADMIN_EMAIL="mail@example.com"
 
+SERVISE_SUBDOMAIN="" # use for let's encrypt 
+
 ALLOW_IPS=`cat << EOS
 xxx.xxx.xxx.xxx
 EOS
