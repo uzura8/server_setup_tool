@@ -16,6 +16,7 @@ gpasswd -a apache webadmin
 
 ### Create Web directries ###
 echo "umask 002" > /etc/profile.d/umask.sh
+#echo "umask 002" > /etc/sysconfig/httpd
 mkdir -p /var/www/sites
 chown ${ADMIN_USER} /var/www/sites /var/www/html
 chgrp webadmin /var/www/sites /var/www/html
