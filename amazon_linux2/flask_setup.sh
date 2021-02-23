@@ -11,6 +11,7 @@ LoadModule wsgi_module ${MOD_WSGI_PATH}
   ServerName ${SERVISE_DOMAIN}
   DocumentRoot /var/www/sites/${SERVISE_DOMAIN}
   WSGIScriptAlias / /var/www/sites/${SERVISE_DOMAIN}/adapter.wsgi
+  WSGIPassAuthorization On
   <Directory "/var/www/sites/${SERVISE_DOMAIN}/">
     Order deny,allow
     Allow from all
